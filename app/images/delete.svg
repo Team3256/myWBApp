@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="9" cy="9" r="9"></circle>
+    </defs>
+    <g id="Responsibility-Edit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-30.000000, -216.000000)">
+        <g id="Group" transform="translate(32.000000, 218.000000)">
+            <g id="D-BG-2">
+                <use fill="#EA1414" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#FFFFFF" stroke-width="2" cx="9" cy="9" r="10"></circle>
+            </g>
+            <rect id="D-Bar-2" fill="#FFFFFF" x="4" y="8" width="10" height="2" rx="1"></rect>
+        </g>
+    </g>
+</svg>

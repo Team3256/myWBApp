@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="26px" viewBox="0 0 22 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Task Icon Active</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Task---Active" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-13.000000, -6.000000)">
+        <path d="M16,6 L32,6 C33.6568542,6 35,7.34314575 35,9 L35,29 C35,30.6568542 33.6568542,32 32,32 L16,32 C14.3431458,32 13,30.6568542 13,29 L13,9 C13,7.34314575 14.3431458,6 16,6 Z M19,13 C18.4477153,13 18,13.4477153 18,14 C18,14.5522847 18.4477153,15 19,15 L29,15 C29.5522847,15 30,14.5522847 30,14 C30,13.4477153 29.5522847,13 29,13 L19,13 Z M19,18 C18.4477153,18 18,18.4477153 18,19 C18,19.5522847 18.4477153,20 19,20 L29,20 C29.5522847,20 30,19.5522847 30,19 C30,18.4477153 29.5522847,18 29,18 L19,18 Z M19,23 C18.4477153,23 18,23.4477153 18,24 C18,24.5522847 18.4477153,25 19,25 L29,25 C29.5522847,25 30,24.5522847 30,24 C30,23.4477153 29.5522847,23 29,23 L19,23 Z" id="Task-Icon-Active" fill="#014F8F"></path>
+    </g>
+</svg>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="30px" viewBox="0 0 25 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Pause Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Task-On-Going" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-68.000000, -263.000000)">
+        <path d="M70,263 L75,263 C76.1045695,263 77,263.895431 77,265 L77,291 C77,292.104569 76.1045695,293 75,293 L70,293 C68.8954305,293 68,292.104569 68,291 L68,265 C68,263.895431 68.8954305,263 70,263 Z M86,263 L91,263 C92.1045695,263 93,263.895431 93,265 L93,291 C93,292.104569 92.1045695,293 91,293 L86,293 C84.8954305,293 84,292.104569 84,291 L84,265 C84,263.895431 84.8954305,263 86,263 Z" id="Pause-Icon" fill="#FFFFFF"></path>
+    </g>
+</svg>
