@@ -64,4 +64,4 @@ package.json:
 * **Marc Liu** - _UI Design_ - _No GitHub Account_
 * **Samuel Stephen** - _Made scouting schema_ - [Saamstep](https://github.com/Saamstep)
 
-See also the list of [contributors](https://github.com/Team3256/WB_Digital_Infrastructure/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Team3256/myWBApp/contributors) who participated in this project.
