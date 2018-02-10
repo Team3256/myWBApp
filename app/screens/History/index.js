@@ -26,7 +26,7 @@ class History extends Component<{}> {
         />
         <ScrollView style={styles.mainContainer}>
           <ListButton text="See Summary" onPress={() => this.seeSummary()} />
-          {tasks.map((e, i) => {
+          {tasks.reverse().map((e, i) => {
             return (
               <View style={styles.tasksContainer} key={i}>
                 <Text style={styles.timeText}>

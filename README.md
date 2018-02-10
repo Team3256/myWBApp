@@ -1,5 +1,8 @@
 # myWB React Native App [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
+<img src="screenshots/ss1.png" width="30%"></img> <img src="screenshots/ss2.png" width="30%"></img><img src="screenshots/ss5.png" width="30%"></img> <img src="screenshots/ss3.png" width="30%"></img> <img src="screenshots/ss4.png" width="30%"></img>  <img src="screenshots/ss6.png" width="30%"></img> 
+
+
 This repo contains the code for the myWB app, which works with the [myWB Database](https://github.com/Team3256/WB_Digital_Infrastructure).
 
 ## Getting Started
