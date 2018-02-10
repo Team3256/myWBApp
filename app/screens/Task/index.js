@@ -84,7 +84,7 @@ class Task extends Component<{}> {
       fastestInterval: 5000,
       activitiesInterval: 5000,
       stopOnStillActivity: false,
-      url: 'http://localhost:3000/methods/devices.updateLocation',
+      url: 'http://192.168.7.57:3000/methods/devices.updateLocation',
       httpHeaders: {
         myWBApp: 'bar'
       },
@@ -169,11 +169,6 @@ class Task extends Component<{}> {
       console.log(
         '[INFO] BackgroundGeolocation auth status: ' + status.authorization
       );
-
-      // // you don't need to check status before start (this is just the example)
-      // if (!status.isRunning) {
-      //   BackgroundGeolocation.start(); //triggers start on start event
-      // }
     });
 
     // you can also just start without checking for status

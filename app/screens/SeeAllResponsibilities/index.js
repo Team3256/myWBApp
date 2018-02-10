@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -14,6 +15,8 @@ import SwipeableView from 'react-native-swipeable-view';
 import Meteor, { createContainer } from 'react-native-meteor';
 
 import Header from '../../components/Header';
+
+import DeleteIcon from '../../images/delete.png';
 
 class ShowAllResponsibilities extends Component<{}> {
   constructor(props) {
@@ -40,23 +43,29 @@ class ShowAllResponsibilities extends Component<{}> {
             return (
               <SwipeableView
                 key={i}
+                isOpen={this.state.isEditing}
                 btnsArray={[
                   {
                     text: 'Button',
+                    onPress: () => this.deleteResponsibility(e),
+                    autoClose: true,
                     component: (
                       <View
                         style={{
                           width: '100%',
                           height: '100%',
-                          backgroundColor: 'black'
+                          backgroundColor: 'white',
+                          paddingTop: 5,
+                          paddingRight: 20
                         }}
                       >
-                        <Text>ye</Text>
+                        <Image
+                          style={styles.buttonIcon}
+                          source={DeleteIcon}
+                          resizeMode="contain"
+                        />
                       </View>
-                    ),
-                    style: {
-                      backgroundColor: 'black'
-                    }
+                    )
                   }
                 ]}
                 style={{ backgroundColor: 'black' }}
@@ -78,6 +87,11 @@ class ShowAllResponsibilities extends Component<{}> {
 
   toggleEditing() {
     this.setState({ isEditing: !this.state.isEditing });
+  }
+
+  deleteResponsibility(responsibility) {
+    console.log(responsibility);
+    Meteor.call('responsibilities.delete', responsibility._id);
   }
 }
 
@@ -141,5 +155,9 @@ const styles = StyleSheet.create({
   },
   regularText: {
     color: '#383940'
+  },
+  buttonIcon: {
+    width: '100%',
+    height: '100%'
   }
 });
