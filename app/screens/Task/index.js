@@ -47,23 +47,6 @@ class Task extends Component<{}> {
         props.navigation.navigate(data.userInfo.url);
       }
     );
-    Alert.alert(
-      'Alert Title',
-      DeviceInfo.getUniqueID(),
-      [
-        {
-          text: 'Ask me later',
-          onPress: () => console.log('Ask me later pressed')
-        },
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel'
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') }
-      ],
-      { cancelable: false }
-    );
   }
 
   componentWillMount() {
@@ -101,15 +84,15 @@ class Task extends Component<{}> {
       fastestInterval: 5000,
       activitiesInterval: 5000,
       stopOnStillActivity: false,
-      url: 'http://localhost:3000/methods/location.updateLocation',
+      url: 'http://localhost:3000/methods/devices.updateLocation',
       httpHeaders: {
-        'X-FOO': 'bar'
+        myWBApp: 'bar'
       },
-      // customize post properties
       postTemplate: {
         lat: '@latitude',
         lon: '@longitude',
-        userId: Meteor.userId() // you can also add your own properties
+        userId: Meteor.userId(),
+        UUID: DeviceInfo.getUniqueID()
       }
     });
 
