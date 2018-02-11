@@ -3,4 +3,6 @@
     <string moduleConfig="true" name="appcenterAnalytics_whenToEnableAnalytics">ALWAYS_SEND</string>
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">eaa4b976-6ad6-480e-8856-cbf9b13aa663</string>
     <string name="app_name">myWB</string>
+    <string name="account_type">com.dbapp</string>
+    <string name="content_authority">com.dbapp</string>
 </resources>

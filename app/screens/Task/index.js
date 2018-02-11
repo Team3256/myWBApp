@@ -35,7 +35,8 @@ class Task extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: false,
+      currentLocation: {}
     };
     var subscription = DeviceEventEmitter.addListener(
       'quickActionShortcut',
@@ -43,8 +44,6 @@ class Task extends Component<{}> {
         console.log(data.title);
         console.log(data.type);
         console.log(data.userInfo);
-
-        props.navigation.navigate(data.userInfo.url);
       }
     );
   }
@@ -70,10 +69,20 @@ class Task extends Component<{}> {
         }
       }
     ]);
+
+    QuickActions.popInitialAction()
+      .then(action => {
+        console.log(action);
+        if (action) {
+          this.props.navigation.navigate(action.userInfo.url);
+        }
+      })
+      .catch(console.error);
+
     BackgroundGeolocation.configure({
       desiredAccuracy: BackgroundGeolocation.MEDIUM_ACCURACY,
-      stationaryRadius: 50,
-      distanceFilter: 10,
+      stationaryRadius: 20,
+      distanceFilter: 5,
       notificationTitle: 'Background tracking',
       notificationText: 'enabled',
       debug: true,
@@ -81,16 +90,16 @@ class Task extends Component<{}> {
       stopOnTerminate: false,
       locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
       interval: 5000,
-      fastestInterval: 5000,
-      activitiesInterval: 5000,
+      fastestInterval: 4000,
+      activitiesInterval: 4000,
       stopOnStillActivity: false,
-      url: 'http://192.168.7.57:3000/methods/devices.updateLocation',
+      url: 'http://10.78.16.218:3000/methods/devices.updateLocation',
       httpHeaders: {
         myWBApp: 'bar'
       },
       postTemplate: {
         lat: '@latitude',
-        lon: '@longitude',
+        lng: '@longitude',
         userId: Meteor.userId(),
         UUID: DeviceInfo.getUniqueID()
       }
@@ -101,6 +110,7 @@ class Task extends Component<{}> {
       // to perform long running operation on iOS
       // you need to create background task
       console.log(location);
+      this.setState({ currentLocation: location });
       BackgroundGeolocation.startTask(taskKey => {
         // execute long running task
         // eg. ajax post location
@@ -170,9 +180,6 @@ class Task extends Component<{}> {
         '[INFO] BackgroundGeolocation auth status: ' + status.authorization
       );
     });
-
-    // you can also just start without checking for status
-    BackgroundGeolocation.start();
   }
 
   render() {
@@ -236,6 +243,7 @@ class Task extends Component<{}> {
               text="See All History"
             />
           </View>
+          <Text>{JSON.stringify(this.state.currentLocation)}</Text>
         </ScrollView>
       </View>
     );
@@ -271,12 +279,32 @@ class Task extends Component<{}> {
   }
 
   startTask(obj) {
-    Meteor.call('responsibilities.lastUsed', obj);
-    Meteor.call('tasks.start', obj._id);
+    BackgroundGeolocation.start();
+    Meteor.call('tasks.start', obj._id, e => {
+      if (e) {
+        Alert.alert(e.error, e.reason, [
+          {
+            text: 'OK'
+          }
+        ]);
+      } else {
+        console.log('no error');
+        Meteor.call('responsibilities.lastUsed', obj);
+      }
+    });
   }
 
   stopTask(currentTask) {
-    Meteor.call('tasks.end', currentTask);
+    BackgroundGeolocation.stop();
+    Meteor.call('tasks.end', currentTask, e => {
+      if (e) {
+        Alert.alert(e.error, e.reason, [
+          {
+            text: 'OK'
+          }
+        ]);
+      }
+    });
   }
 }
 

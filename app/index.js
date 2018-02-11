@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Meteor, { createContainer } from 'react-native-meteor';
 import codePush from 'react-native-code-push';
 
-Meteor.connect('ws://192.168.7.57:3000/websocket');
+Meteor.connect('ws://10.78.16.218:3000/websocket');
 
 class App extends Component<{}> {
   render() {
