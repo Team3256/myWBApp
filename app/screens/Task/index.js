@@ -16,6 +16,7 @@ import {
 import PropTypes from 'prop-types';
 import QuickActions from 'react-native-quick-actions';
 
+import { TrackLocation } from '../../config/location';
 import Meteor, { createContainer } from 'react-native-meteor';
 import { NavigationActions } from 'react-navigation';
 
@@ -24,19 +25,16 @@ import TaskBox from '../../components/TaskBox';
 import RunningTaskBox from '../../components/RunningTaskBox';
 import AddTaskBox from '../../components/AddTaskBox';
 import AddResponsibilityModal from '../../components/AddResponsibilityModal';
-
 import ListButton from '../../components/ListButton';
 
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-
 import DeviceInfo from 'react-native-device-info';
 
 class Task extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false,
-      currentLocation: {}
+      isModalVisible: false
     };
     var subscription = DeviceEventEmitter.addListener(
       'quickActionShortcut',
@@ -46,6 +44,8 @@ class Task extends Component<{}> {
         console.log(data.userInfo);
       }
     );
+
+    TrackLocation();
   }
 
   componentWillMount() {
@@ -78,108 +78,6 @@ class Task extends Component<{}> {
         }
       })
       .catch(console.error);
-
-    BackgroundGeolocation.configure({
-      desiredAccuracy: BackgroundGeolocation.MEDIUM_ACCURACY,
-      stationaryRadius: 20,
-      distanceFilter: 5,
-      notificationTitle: 'Background tracking',
-      notificationText: 'enabled',
-      debug: true,
-      startOnBoot: true,
-      stopOnTerminate: false,
-      locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-      interval: 5000,
-      fastestInterval: 4000,
-      activitiesInterval: 4000,
-      stopOnStillActivity: false,
-      url: 'http://10.78.16.218:3000/methods/devices.updateLocation',
-      httpHeaders: {
-        myWBApp: 'bar'
-      },
-      postTemplate: {
-        lat: '@latitude',
-        lng: '@longitude',
-        userId: Meteor.userId(),
-        UUID: DeviceInfo.getUniqueID()
-      }
-    });
-
-    BackgroundGeolocation.on('location', location => {
-      // handle your locations here
-      // to perform long running operation on iOS
-      // you need to create background task
-      console.log(location);
-      this.setState({ currentLocation: location });
-      BackgroundGeolocation.startTask(taskKey => {
-        // execute long running task
-        // eg. ajax post location
-        // IMPORTANT: task has to be ended by endTask
-        BackgroundGeolocation.endTask(taskKey);
-      });
-    });
-
-    BackgroundGeolocation.on('stationary', stationaryLocation => {
-      // handle stationary locations here
-      Actions.sendLocation(stationaryLocation);
-    });
-
-    BackgroundGeolocation.on('error', error => {
-      console.log('[ERROR] BackgroundGeolocation error:', error);
-    });
-
-    BackgroundGeolocation.on('start', () => {
-      console.log('[INFO] BackgroundGeolocation service has been started');
-    });
-
-    BackgroundGeolocation.on('stop', () => {
-      console.log('[INFO] BackgroundGeolocation service has been stopped');
-    });
-
-    BackgroundGeolocation.on('authorization', status => {
-      console.log(
-        '[INFO] BackgroundGeolocation authorization status: ' + status
-      );
-      if (status !== BackgroundGeolocation.AUTHORIZED) {
-        Alert.alert(
-          'Location services are disabled',
-          'Would you like to open location settings?',
-          [
-            {
-              text: 'Yes',
-              onPress: () => BackgroundGeolocation.showLocationSettings()
-            },
-            {
-              text: 'No',
-              onPress: () => console.log('No Pressed'),
-              style: 'cancel'
-            }
-          ]
-        );
-      }
-    });
-
-    BackgroundGeolocation.on('background', () => {
-      console.log('[INFO] App is in background');
-    });
-
-    BackgroundGeolocation.on('foreground', () => {
-      console.log('[INFO] App is in foreground');
-    });
-
-    BackgroundGeolocation.checkStatus(status => {
-      console.log(
-        '[INFO] BackgroundGeolocation service is running',
-        status.isRunning
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation service has permissions',
-        status.hasPermissions
-      );
-      console.log(
-        '[INFO] BackgroundGeolocation auth status: ' + status.authorization
-      );
-    });
   }
 
   render() {
@@ -243,7 +141,6 @@ class Task extends Component<{}> {
               text="See All History"
             />
           </View>
-          <Text>{JSON.stringify(this.state.currentLocation)}</Text>
         </ScrollView>
       </View>
     );
@@ -279,8 +176,7 @@ class Task extends Component<{}> {
   }
 
   startTask(obj) {
-    BackgroundGeolocation.start();
-    Meteor.call('tasks.start', obj._id, e => {
+    Meteor.call('tasks.start', obj._id, DeviceInfo.getUniqueID(), e => {
       if (e) {
         Alert.alert(e.error, e.reason, [
           {
@@ -295,7 +191,6 @@ class Task extends Component<{}> {
   }
 
   stopTask(currentTask) {
-    BackgroundGeolocation.stop();
     Meteor.call('tasks.end', currentTask, e => {
       if (e) {
         Alert.alert(e.error, e.reason, [

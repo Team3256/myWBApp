@@ -6,8 +6,9 @@ import { AuthStack, Tabs } from './config/routes';
 import PropTypes from 'prop-types';
 import Meteor, { createContainer } from 'react-native-meteor';
 import codePush from 'react-native-code-push';
+import { ServerIP } from './config/server';
 
-Meteor.connect('ws://10.78.16.218:3000/websocket');
+Meteor.connect('ws://' + ServerIP + '/websocket');
 
 class App extends Component<{}> {
   render() {
