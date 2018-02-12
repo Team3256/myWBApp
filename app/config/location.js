@@ -7,13 +7,13 @@ import { ServerIP } from './server';
 export const TrackLocation = () => {
   const config = {
     desiredAccuracy: BackgroundGeolocation.MEDIUM_ACCURACY,
-    stationaryRadius: 5,
-    distanceFilter: 5,
+    stationaryRadius: 15,
+    distanceFilter: 15,
     notificationTitle: 'myWB',
     notificationText: 'Running',
     debug: false,
     startOnBoot: true,
-    stopOnTerminate: false,
+    stopOnTerminate: true,
     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
     interval: 30000,
     fastestInterval: 30000,

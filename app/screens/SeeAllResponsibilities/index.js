@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Platform,
   StyleSheet,
   Text,
@@ -91,7 +92,15 @@ class ShowAllResponsibilities extends Component<{}> {
 
   deleteResponsibility(responsibility) {
     console.log(responsibility);
-    Meteor.call('responsibilities.delete', responsibility._id);
+    Meteor.call('responsibilities.delete', responsibility._id, e => {
+      if (e) {
+        Alert.alert(e.error, e.reason, [
+          {
+            text: 'OK'
+          }
+        ]);
+      }
+    });
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import Loading from './screens/loading';
+import NoConnection from './screens/NoConnection';
 import { AuthStack, Tabs } from './config/routes';
 
 import PropTypes from 'prop-types';
@@ -11,19 +11,33 @@ import { ServerIP } from './config/server';
 Meteor.connect('ws://' + ServerIP + '/websocket');
 
 class App extends Component<{}> {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { status, user, loggingIn } = this.props;
 
-    if (!status.connected) {
-      return <Loading loadingText="Connecting..." />;
+    if (!user) {
+      return (
+        <View style={{ width: '100%', height: '100%' }}>
+          {this.renderNoConnection(status.connected)}
+          <AuthStack />
+        </View>
+      );
     }
 
-    if (status.connected && !user) {
-      return <AuthStack />;
-    }
+    return (
+      <View style={{ width: '100%', height: '100%' }}>
+        {this.renderNoConnection(status.connected)}
+        <Tabs />
+      </View>
+    );
+  }
 
-    if (status.connected && user) {
-      return <Tabs />;
+  renderNoConnection(connected) {
+    if (!connected) {
+      return <NoConnection connection={connected} />;
     }
   }
 }

@@ -284,7 +284,7 @@ export default class IntroSlides extends Component<{}> {
               <Image source={Slide2} style={styles.slideImage} />
             </View>
             <View style={styles.slideContainer}>
-              <Text style={styles.slideText}>Scouting turned cool(er).</Text>
+              <Text style={styles.slideText}>Scouting done cool(er).</Text>
               <Image source={Slide3} style={styles.slideImage} />
             </View>
           </Swiper>

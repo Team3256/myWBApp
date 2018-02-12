@@ -172,10 +172,7 @@ class Task extends Component<{}> {
   }
 
   createNewResponsibility(text, category) {
-    Meteor.call('responsibilities.insert', {
-      responsibilityText: text,
-      responsibilityCategory: category
-    });
+    Meteor.call('responsibilities.insert', text, category);
   }
 
   startTask(obj) {
@@ -187,8 +184,7 @@ class Task extends Component<{}> {
           }
         ]);
       } else {
-        console.log('no error');
-        Meteor.call('responsibilities.lastUsed', obj);
+        Meteor.call('responsibilities.lastUsed', obj._id);
       }
     });
   }

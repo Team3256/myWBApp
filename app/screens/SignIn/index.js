@@ -27,7 +27,7 @@ export default class SignIn extends Component<{}> {
   }
 
   componentWillMount() {
-    const value = AsyncStorage.getItem('@myWB:shouldShowSlides', (e, r) => {
+    const value = AsyncStorage.getItem('@myWB:shouldShowSlides2', (e, r) => {
       if (!r) {
         this.setState({ shouldShowSlides: true });
       }
@@ -35,7 +35,7 @@ export default class SignIn extends Component<{}> {
   }
 
   closeSlides() {
-    AsyncStorage.setItem('@myWB:shouldShowSlides', 'false');
+    AsyncStorage.setItem('@myWB:shouldShowSlides2', 'false');
     this.setState({ shouldShowSlides: false });
   }
 
@@ -56,7 +56,7 @@ export default class SignIn extends Component<{}> {
         <View style={styles.loginView}>
           <TextInput
             style={styles.textInput}
-            onChangeText={text => this.setState({ email: text })}
+            onChangeText={text => this.setState({ email: text.toLowerCase() })}
             placeholder="Warriorlife Email"
             placeholderTextColor="#BEBFC6"
             value={this.state.email}
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 35,
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
+    paddingLeft: 10,
     marginBottom: 10
   },
   loginButton: {
