@@ -48,17 +48,17 @@ export default class AddResponsibilityModal extends Component<{}> {
         }}
       >
         {Platform.OS === 'ios' ? (
-          <BlurView
+          <VibrancyView
             style={{
               position: 'absolute',
-              top: -20,
-              left: -20,
-              bottom: -20,
-              right: -20
+              top: -50,
+              left: -50,
+              bottom: -50,
+              right: -50
             }}
             viewRef={this.backdrop}
             blurType="dark"
-            blurAmount={8}
+            blurAmount={10}
           />
         ) : null}
         <KeyboardAvoidingView

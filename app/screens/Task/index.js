@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Animated,
   Alert,
   Platform,
   StyleSheet,
@@ -15,6 +16,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import QuickActions from 'react-native-quick-actions';
+import { BlurView, VibrancyView } from 'react-native-blur';
 
 import { TrackLocation } from '../../config/location';
 import Meteor, { createContainer } from 'react-native-meteor';
@@ -34,7 +36,8 @@ class Task extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: false,
+      fadeAnim: new Animated.Value(0)
     };
     var subscription = DeviceEventEmitter.addListener(
       'quickActionShortcut',
@@ -288,5 +291,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     marginTop: 10
+  },
+  donePopup: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    zIndex: 1,
+    borderRadius: 8,
+    top: '40%'
   }
 });

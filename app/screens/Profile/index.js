@@ -32,7 +32,7 @@ export default class Profile extends Component<{}> {
               <Text style={styles.cancelButton}>Cancel</Text>
             </TouchableOpacity>
             <Text style={styles.headerName}>Profile</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => Meteor.logout()}>
               <Text style={styles.headerName}>Done</Text>
             </TouchableOpacity>
           </View>

@@ -14,10 +14,10 @@ import Divider from './Divider';
 
 export default class ListButton extends Component<{}> {
   render() {
-    const { onPress, disabled, text } = this.props;
+    const { onPress, disabled, text, style } = this.props;
     return (
       <TouchableOpacity
-        style={styles.listViewButton}
+        style={[styles.listViewButton, style]}
         onPress={() => onPress()}
         disabled={disabled}
       >
@@ -41,7 +41,8 @@ export default class ListButton extends Component<{}> {
 ListButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  style: PropTypes.object
 };
 
 const styles = StyleSheet.create({

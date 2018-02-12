@@ -4014,6 +4014,10 @@ react-native-modal@^4.1.1:
     prop-types "15.5.10"
     react-native-animatable "^1.2.3"
 
+react-native-progress-circle@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress-circle/-/react-native-progress-circle-2.0.0.tgz#26c883cda380690a50baa446ee39a48d31cfabce"
+
 react-native-quick-actions@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/react-native-quick-actions/-/react-native-quick-actions-0.3.6.tgz#e647fd04825cdf04ad40d15e8ae358118d752487"
@@ -4025,6 +4029,12 @@ react-native-radio-buttons@^1.0.0:
 react-native-swipeable-view@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-swipeable-view/-/react-native-swipeable-view-1.1.0.tgz#48afb03877e469c1db0afc48ca5c67042d748736"
+
+react-native-swiper@^1.5.13:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.13.tgz#fa695cd4ab77b9a9df2d2bfee38ea7274dd07a2e"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-tab-view@^0.0.74:
   version "0.0.74"

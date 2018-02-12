@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import Header from '../../components/Header';
 import ListButton from '../../components/ListButton';
+import { NavigationActions } from 'react-navigation';
 
 import Meteor, { createContainer } from 'react-native-meteor';
 
@@ -25,7 +26,11 @@ class History extends Component<{}> {
           navigation={this.props.navigation}
         />
         <ScrollView style={styles.mainContainer}>
-          <ListButton text="See Summary" onPress={() => this.seeSummary()} />
+          <ListButton
+            text="See Summary"
+            onPress={() => this.seeSummary()}
+            style={{ marginBottom: 5 }}
+          />
           {tasks.reverse().map((e, i) => {
             return (
               <View style={styles.tasksContainer} key={i}>
@@ -44,7 +49,14 @@ class History extends Component<{}> {
     );
   }
 
-  seeSummary() {}
+  seeSummary() {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'TasksSummary',
+      params: {}
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
 
   formatDate(date) {
     return new Date(date).toLocaleDateString();

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  AsyncStorage,
   Platform,
   StyleSheet,
   Text,
@@ -12,6 +13,7 @@ import {
 import PropTypes from 'prop-types';
 
 import Meteor from 'react-native-meteor';
+import IntroSlides from '../IntroSlides';
 
 export default class SignIn extends Component<{}> {
   constructor(props) {
@@ -19,14 +21,31 @@ export default class SignIn extends Component<{}> {
     this.state = {
       email: '',
       password: '',
-      error: {}
+      error: {},
+      shouldShowSlides: false
     };
+  }
+
+  componentWillMount() {
+    const value = AsyncStorage.getItem('@myWB:shouldShowSlides', (e, r) => {
+      if (!r) {
+        this.setState({ shouldShowSlides: true });
+      }
+    });
+  }
+
+  closeSlides() {
+    AsyncStorage.setItem('@myWB:shouldShowSlides', 'false');
+    this.setState({ shouldShowSlides: false });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <StatusBar translucent barStyle="light-content" />
+        {this.state.shouldShowSlides ? (
+          <IntroSlides close={() => this.closeSlides()} />
+        ) : null}
         <View style={styles.welcomeView}>
           <Text style={styles.welcomeText1}>欢迎</Text>
           <Text style={styles.welcomeText2}>Chào mừng</Text>

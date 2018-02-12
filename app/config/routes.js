@@ -10,6 +10,7 @@ import CreateNewResponsibility from '../screens/CreateNewResponsibility';
 import SeeAllResponsibilities from '../screens/SeeAllResponsibilities';
 import History from '../screens/History';
 import Profile from '../screens/Profile';
+import TasksSummary from '../screens/TaskSummary';
 
 import taskIcon from '../images/task-icon.png';
 import outreachIcon from '../images/outreach-icon.png';
@@ -56,6 +57,12 @@ export const TaskStack = StackNavigator({
     navigationOptions: {
       header: null,
       tabBar: false
+    }
+  },
+  TasksSummary: {
+    screen: TasksSummary,
+    navigationOptions: {
+      header: null
     }
   }
 });
