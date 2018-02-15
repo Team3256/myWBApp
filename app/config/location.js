@@ -15,9 +15,9 @@ export const TrackLocation = () => {
     startOnBoot: true,
     stopOnTerminate: true,
     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
-    interval: 30000,
-    fastestInterval: 30000,
-    activitiesInterval: 30000,
+    interval: 10000,
+    fastestInterval: 10000,
+    activitiesInterval: 10000,
     stopOnStillActivity: false,
     url: 'http://' + ServerIP + '/methods/devices.updateLocation',
     httpHeaders: {
@@ -37,7 +37,7 @@ export const TrackLocation = () => {
     // handle your locations here
     // to perform long running operation on iOS
     // you need to create background task
-    console.log(location);
+    //console.log(location);
     BackgroundGeolocation.startTask(taskKey => {
       // execute long running task
       // eg. ajax post location
@@ -52,19 +52,19 @@ export const TrackLocation = () => {
   });
 
   BackgroundGeolocation.on('error', error => {
-    console.log('[ERROR] BackgroundGeolocation error:', error);
+    //console.log('[ERROR] BackgroundGeolocation error:', error);
   });
 
   BackgroundGeolocation.on('start', () => {
-    console.log('[INFO] BackgroundGeolocation service has been started');
+    //console.log('[INFO] BackgroundGeolocation service has been started');
   });
 
   BackgroundGeolocation.on('stop', () => {
-    console.log('[INFO] BackgroundGeolocation service has been stopped');
+    //console.log('[INFO] BackgroundGeolocation service has been stopped');
   });
 
   BackgroundGeolocation.on('authorization', status => {
-    console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+    //console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
     if (status !== BackgroundGeolocation.AUTHORIZED) {
       Alert.alert(
         'Location services are disabled',
@@ -85,25 +85,25 @@ export const TrackLocation = () => {
   });
 
   BackgroundGeolocation.on('background', () => {
-    console.log('[INFO] App is in background');
+    //console.log('[INFO] App is in background');
   });
 
   BackgroundGeolocation.on('foreground', () => {
-    console.log('[INFO] App is in foreground');
+    //console.log('[INFO] App is in foreground');
   });
 
   BackgroundGeolocation.checkStatus(status => {
-    console.log(
-      '[INFO] BackgroundGeolocation service is running',
-      status.isRunning
-    );
-    console.log(
-      '[INFO] BackgroundGeolocation service has permissions',
-      status.hasPermissions
-    );
-    console.log(
-      '[INFO] BackgroundGeolocation auth status: ' + status.authorization
-    );
+    //console.log(
+    //   '[INFO] BackgroundGeolocation service is running',
+    //   status.isRunning
+    // );
+    //console.log(
+    //   '[INFO] BackgroundGeolocation service has permissions',
+    //   status.hasPermissions
+    // );
+    //console.log(
+    //   '[INFO] BackgroundGeolocation auth status: ' + status.authorization
+    // );
   });
 
   BackgroundGeolocation.start();

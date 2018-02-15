@@ -27,7 +27,7 @@ export default class SignIn extends Component<{}> {
   }
 
   componentWillMount() {
-    const value = AsyncStorage.getItem('@myWB:shouldShowSlides2', (e, r) => {
+    const value = AsyncStorage.getItem('@myWB:shouldShowSlides4', (e, r) => {
       if (!r) {
         this.setState({ shouldShowSlides: true });
       }
@@ -35,7 +35,7 @@ export default class SignIn extends Component<{}> {
   }
 
   closeSlides() {
-    AsyncStorage.setItem('@myWB:shouldShowSlides2', 'false');
+    AsyncStorage.setItem('@myWB:shouldShowSlides4', 'false');
     this.setState({ shouldShowSlides: false });
   }
 

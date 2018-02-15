@@ -21,6 +21,7 @@
     "react-native-meteor": "^1.2.0",
     "react-native-modal": "^4.1.1",
     "react-native-progress-circle": "^2.0.0",
+    "react-native-push-notification": "^3.0.2",
     "react-native-quick-actions": "^0.3.6",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-swipeable-view": "^1.1.0",

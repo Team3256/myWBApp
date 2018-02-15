@@ -12,7 +12,8 @@ import {
   StatusBar,
   Image,
   DeviceEventEmitter,
-  TouchableHighlight
+  TouchableHighlight,
+  PushNotificationIOS
 } from 'react-native';
 import PropTypes from 'prop-types';
 import QuickActions from 'react-native-quick-actions';
@@ -31,6 +32,7 @@ import ListButton from '../../components/ListButton';
 
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import DeviceInfo from 'react-native-device-info';
+import PushNotification from 'react-native-push-notification';
 
 class Task extends Component<{}> {
   constructor(props) {
@@ -47,8 +49,6 @@ class Task extends Component<{}> {
         console.log(data.userInfo);
       }
     );
-
-    TrackLocation();
   }
 
   componentWillMount() {
@@ -81,6 +81,59 @@ class Task extends Component<{}> {
         }
       })
       .catch(console.error);
+  }
+
+  onNotification(notification) {
+    console.log('NOTIFICATION:', notification);
+
+    // process the notification
+    if (notification.data.goto) {
+      console.log(this);
+      this.props.navigation.navigate(notification.data.goto);
+    }
+
+    // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  }
+
+  componentDidMount() {
+    TrackLocation();
+    PushNotification.configure({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function(token) {
+        console.log('TOKEN:', token);
+        Meteor.call(
+          'devices.updateNotificationToken',
+          DeviceInfo.getUniqueID(),
+          token.token,
+          token.os
+        );
+      },
+
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: this.onNotification.bind(this),
+
+      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+      senderID: 'YOUR GCM SENDER ID',
+
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+
+      // Should the initial notification be popped automatically
+      // default: true
+      popInitialNotification: true,
+
+      /**
+       * (optional) default: true
+       * - Specified if permissions (ios) and token (android and ios) will requested or not,
+       * - if not, you must call PushNotificationsHandler.requestPermissions() later
+       */
+      requestPermissions: true
+    });
   }
 
   render() {
