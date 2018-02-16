@@ -14,7 +14,7 @@ export const TrackLocation = () => {
     debug: false,
     startOnBoot: true,
     stopOnTerminate: true,
-    locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+    locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
     interval: 10000,
     fastestInterval: 10000,
     activitiesInterval: 10000,
