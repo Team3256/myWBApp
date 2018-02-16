@@ -54,21 +54,30 @@ class Task extends Component<{}> {
   componentWillMount() {
     QuickActions.setShortcutItems([
       {
-        type: 'Tasks', // Required
-        title: 'Open Tasks', // Optional, if empty, `type` will be used instead
+        type: 'Tasks',
+        title: 'Open Tasks',
         subtitle: 'View your tasks',
-        icon: 'TaskCompleted', // Pass any of UIApplicationShortcutIconType<name>
+        icon: 'TaskCompleted',
         userInfo: {
-          url: 'Tasks' // provide custom data, like in-app url you want to open
+          url: 'Tasks'
         }
       },
       {
-        type: 'Outreach', // Required
-        title: 'Open Outreach', // Optional, if empty, `type` will be used instead
+        type: 'Outreach',
+        title: 'Open Outreach',
         subtitle: 'Track your hours',
-        icon: 'Location', // Pass any of UIApplicationShortcutIconType<name>
+        icon: 'Location',
         userInfo: {
-          url: 'Outreach' // provide custom data, like in-app url you want to open
+          url: 'Outreach'
+        }
+      },
+      {
+        type: 'Scouting',
+        title: 'Open Scouting',
+        subtitle: 'Scout some teams',
+        icon: 'Task',
+        userInfo: {
+          url: 'Scouting'
         }
       }
     ]);
