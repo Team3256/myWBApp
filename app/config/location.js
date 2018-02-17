@@ -6,18 +6,17 @@ import { ServerIP } from './server';
 
 export const TrackLocation = () => {
   const config = {
-    desiredAccuracy: BackgroundGeolocation.MEDIUM_ACCURACY,
-    stationaryRadius: 15,
-    distanceFilter: 15,
+    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
     notificationTitle: 'myWB',
     notificationText: 'Running',
+    distanceFilter: 5,
     debug: false,
     startOnBoot: true,
     stopOnTerminate: true,
-    locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
-    interval: 10000,
-    fastestInterval: 10000,
-    activitiesInterval: 10000,
+    locationProvider: BackgroundGeolocation.RAW_PROVIDER,
+    interval: 1000,
+    fastestInterval: 1000,
+    activitiesInterval: 1000,
     stopOnStillActivity: false,
     url: 'http://' + ServerIP + '/methods/devices.updateLocation',
     httpHeaders: {
@@ -48,7 +47,7 @@ export const TrackLocation = () => {
 
   BackgroundGeolocation.on('stationary', stationaryLocation => {
     // handle stationary locations here
-    Actions.sendLocation(stationaryLocation);
+    //Actions.sendLocation(stationaryLocation);
   });
 
   BackgroundGeolocation.on('error', error => {

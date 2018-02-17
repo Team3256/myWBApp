@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, NativeModules } from 'react-native';
 import NoConnection from './screens/NoConnection';
 import { AuthStack, Tabs } from './config/routes';
 
@@ -13,6 +13,8 @@ Meteor.connect('ws://' + ServerIP + '/websocket');
 class App extends Component<{}> {
   constructor(props) {
     super(props);
+    // Testing native code integration
+    //NativeModules.CalendarManager.addEvent('something', 'ye');
   }
 
   render() {
