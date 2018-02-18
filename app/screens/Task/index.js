@@ -39,8 +39,10 @@ class Task extends Component<{}> {
     super(props);
     this.state = {
       isModalVisible: false,
-      fadeAnim: new Animated.Value(0)
+      fadeAnim: new Animated.Value(0),
+      canRenderTasks: true
     };
+
     var subscription = DeviceEventEmitter.addListener(
       'quickActionShortcut',
       function(data) {
@@ -109,7 +111,7 @@ class Task extends Component<{}> {
         }
       },
       {
-        type: 'Scouting',
+        type: 'Scout',
         title: 'Open Scouting',
         subtitle: 'Scout some teams',
         icon: 'Task',
@@ -141,10 +143,46 @@ class Task extends Component<{}> {
     notification.finish(PushNotificationIOS.FetchResult.NoData);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    BackgroundGeolocation.on('error', error => {
+      Alert.alert(
+        'Location services are disabled',
+        'Would you like to open location settings?',
+        [
+          {
+            text: 'Yes',
+            onPress: () => BackgroundGeolocation.showLocationSettings()
+          },
+          {
+            text: 'No',
+            onPress: () => this.setState({ canRenderTasks: false }),
+            style: 'cancel'
+          }
+        ]
+      );
+    });
+  }
 
   render() {
     const { responsibilities, loading, tasks, currentTask } = this.props;
+    const { canRenderTasks } = this.state;
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const obj = pos.coords;
+        Meteor.call('devices.updateLocation', {
+          lat: obj.latitude,
+          lng: obj.longitude,
+          userId: Meteor.userId(),
+          UUID: DeviceInfo.getUniqueID()
+        });
+      },
+      null,
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
+    );
     return (
       <View style={styles.container}>
         <Header
@@ -172,27 +210,29 @@ class Task extends Component<{}> {
               text="See All Responsibilities"
             />
             <View style={styles.responsibilitiesList}>
-              {responsibilities.map((e, i) => {
-                if (currentTask && currentTask.responsibilityId == e._id) {
-                  return (
-                    <RunningTaskBox
-                      runningTask={currentTask}
-                      responsibility={e}
-                      stopTask={e => this.stopTask(e)}
-                      key={i}
-                    />
-                  );
-                } else {
-                  return (
-                    <TaskBox
-                      responsibility={e}
-                      startTask={e => this.startTask(e)}
-                      runningTask={currentTask}
-                      key={i}
-                    />
-                  );
-                }
-              })}
+              {canRenderTasks
+                ? responsibilities.map((e, i) => {
+                    if (currentTask && currentTask.responsibilityId == e._id) {
+                      return (
+                        <RunningTaskBox
+                          runningTask={currentTask}
+                          responsibility={e}
+                          stopTask={e => this.stopTask(e)}
+                          key={i}
+                        />
+                      );
+                    } else {
+                      return (
+                        <TaskBox
+                          responsibility={e}
+                          startTask={e => this.startTask(e)}
+                          runningTask={currentTask}
+                          key={i}
+                        />
+                      );
+                    }
+                  })
+                : null}
             </View>
           </View>
           <View style={styles.historyContainer}>

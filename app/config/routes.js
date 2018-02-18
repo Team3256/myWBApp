@@ -5,16 +5,17 @@ import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import Task from '../screens/Task';
 import SignIn from '../screens/SignIn';
 import Outreach from '../screens/Outreach';
-import Scouting from '../screens/Scouting';
+import Scout from '../screens/Scouting';
 import CreateNewResponsibility from '../screens/CreateNewResponsibility';
 import SeeAllResponsibilities from '../screens/SeeAllResponsibilities';
 import History from '../screens/History';
 import Profile from '../screens/Profile';
 import TasksSummary from '../screens/TaskSummary';
+import AddScout from '../screens/AddScout';
 
 import taskIcon from '../images/task-icon.png';
 import outreachIcon from '../images/outreach-icon.png';
-import scoutingIcon from '../images/scout-icon.png';
+import scoutIcon from '../images/scout-icon.png';
 
 export const AuthStack = StackNavigator(
   {
@@ -64,6 +65,13 @@ export const TaskStack = StackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  AddScout: {
+    screen: AddScout,
+    navigationOptions: {
+      header: null,
+      tabBar: false
+    }
   }
 });
 
@@ -76,9 +84,9 @@ export const OutreachStack = StackNavigator({
   }
 });
 
-export const ScoutingStack = StackNavigator({
-  Scouting: {
-    screen: Scouting,
+export const ScoutStack = StackNavigator({
+  Scout: {
+    screen: Scout,
     navigationOptions: {
       header: null
     }
@@ -120,14 +128,14 @@ export const Tabs = TabNavigator(
         )
       }
     },
-    Scouting: {
-      screen: ScoutingStack,
+    Scout: {
+      screen: ScoutStack,
       navigationOptions: {
-        tabBarLabel: 'Scouting',
+        tabBarLabel: 'Scout',
         tabBarIcon: ({ tintColor }) => (
           <Image
             style={[styles.icon, { tintColor }]}
-            source={scoutingIcon}
+            source={scoutIcon}
             resizeMode="contain"
           />
         )

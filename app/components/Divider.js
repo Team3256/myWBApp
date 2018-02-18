@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 export default class Divider extends Component<{}> {
   render() {
-    const { onPress, disabled, text } = this.props;
     return <View style={styles.containerDivider} />;
   }
 }

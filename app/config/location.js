@@ -62,26 +62,26 @@ export const TrackLocation = () => {
     //console.log('[INFO] BackgroundGeolocation service has been stopped');
   });
 
-  BackgroundGeolocation.on('authorization', status => {
-    //console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
-    if (status !== BackgroundGeolocation.AUTHORIZED) {
-      Alert.alert(
-        'Location services are disabled',
-        'Would you like to open location settings?',
-        [
-          {
-            text: 'Yes',
-            onPress: () => BackgroundGeolocation.showLocationSettings()
-          },
-          {
-            text: 'No',
-            onPress: () => console.log('No Pressed'),
-            style: 'cancel'
-          }
-        ]
-      );
-    }
-  });
+  // BackgroundGeolocation.on('authorization', status => {
+  //   //console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+  //   if (status !== BackgroundGeolocation.AUTHORIZED) {
+  //     Alert.alert(
+  //       'Location services are disabled',
+  //       'Would you like to open location settings?',
+  //       [
+  //         {
+  //           text: 'Yes',
+  //           onPress: () => BackgroundGeolocation.showLocationSettings()
+  //         },
+  //         {
+  //           text: 'No',
+  //           onPress: () => console.log('No Pressed'),
+  //           style: 'cancel'
+  //         }
+  //       ]
+  //     );
+  //   }
+  // });
 
   BackgroundGeolocation.on('background', () => {
     //console.log('[INFO] App is in background');
