@@ -6,11 +6,13 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Header from '../../components/Header';
+import AddIcon from '../../images/add.png';
 
 export default class Scouting extends Component<{}> {
   render() {
@@ -27,39 +29,37 @@ export default class Scouting extends Component<{}> {
         >
           <Text style={styles.headerText}>Current</Text>
           <View style={styles.scoutingContainer}>
-            <ScrollView horizontal={true}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
               <View style={styles.scoutingBoxContainer}>
                 <View style={[styles.scoutingBoxBase, styles.scoutingBoxBlue]}>
                   <Text style={styles.scoutingBoxInnerText}>3256</Text>
                   <Text style={styles.scoutingBoxInnerText}>Blue</Text>
                 </View>
-                <Text style={styles.scoutingBoxText}>Testing</Text>
-              </View>
-              <View style={styles.scoutingBoxContainer}>
-                <View style={[styles.scoutingBoxBase, styles.scoutingBoxBlue]}>
-                  <Text style={styles.scoutingBoxInnerText}>3256</Text>
-                  <Text style={styles.scoutingBoxInnerText}>Blue</Text>
-                </View>
-                <Text style={styles.scoutingBoxText}>Testing</Text>
+                <Text style={styles.scoutingBoxText}>Assigned</Text>
               </View>
               <View style={styles.scoutingBoxContainer}>
                 <View style={[styles.scoutingBoxBase, styles.scoutingBoxRed]}>
                   <Text style={styles.scoutingBoxInnerText}>3256</Text>
-                  <Text style={styles.scoutingBoxInnerText}>Red</Text>
+                  <Text style={styles.scoutingBoxInnerText}>Blue</Text>
                 </View>
-                <Text style={styles.scoutingBoxText}>Testing</Text>
+                <Text style={styles.scoutingBoxText}>Assigned</Text>
+              </View>
+              <View style={styles.scoutingBoxContainer}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('AddScout')}
+                  style={styles.addManually}
+                >
+                  <Image source={AddIcon} style={styles.addManuallyIcon} />
+                </TouchableOpacity>
+                <Text style={styles.scoutingBoxText}>Add Manually</Text>
               </View>
               <View style={styles.spacer} />
             </ScrollView>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('AddScout')}
-            >
-              <Text>Add Manually</Text>
-            </TouchableOpacity>
           </View>
-          <View>
-            <Text>Hello</Text>
-          </View>
+          <View />
         </ScrollView>
       </View>
     );
@@ -122,6 +122,21 @@ const styles = StyleSheet.create({
   scoutingBoxText: {
     marginTop: 5,
     fontSize: 16
+  },
+  addManually: {
+    width: 128,
+    height: 128,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 3,
+    borderStyle: 'dashed',
+    borderColor: '#DFE0E6'
+  },
+  addManuallyIcon: {
+    width: 45,
+    height: 45
   },
   spacer: {
     width: 15,

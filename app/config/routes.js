@@ -65,13 +65,6 @@ export const TaskStack = StackNavigator({
     navigationOptions: {
       header: null
     }
-  },
-  AddScout: {
-    screen: AddScout,
-    navigationOptions: {
-      header: null,
-      tabBar: false
-    }
   }
 });
 
@@ -89,6 +82,13 @@ export const ScoutStack = StackNavigator({
     screen: Scout,
     navigationOptions: {
       header: null
+    },
+  },
+  AddScout: {
+    screen: AddScout,
+    navigationOptions: {
+      header: null,
+      tabBar: false
     }
   }
 });

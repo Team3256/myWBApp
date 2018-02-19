@@ -22,8 +22,17 @@ import Meteor from 'react-native-meteor';
 import Divider from '../../components/Divider';
 import Button from '../../components/Button';
 import ScoutBool from '../../components/ScoutBool';
+import ScoutNum from '../../components/ScoutNum';
 
 import nextIcon from '../../images/next-arrow.png';
+
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  const paddingToBottom = 20;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
 
 export default class AddScout extends Component<{}> {
   constructor(props) {
@@ -32,7 +41,8 @@ export default class AddScout extends Component<{}> {
       pageIndex: 0,
       fabPos: new Animated.Value(0),
       teleop: {},
-      auto: {}
+      auto: {},
+      shouldDoneFloat: false
     };
 
     this.autoElements = [
@@ -41,6 +51,18 @@ export default class AddScout extends Component<{}> {
         question: 'Crossed Line?',
         type: 'bool',
         defaultValue: false
+      },
+      {
+        id: 'switchBlockCount',
+        question: 'Switch Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'scaleBlockCount',
+        question: 'Scale Block #',
+        type: 'number',
+        defaultValue: 0
       },
       {
         id: 'disconnected',
@@ -56,13 +78,49 @@ export default class AddScout extends Component<{}> {
 
     this.teleopElements = [
       {
-        id: 'crossedLine',
-        question: 'Crossed Line?',
+        id: 'switchBlockCount',
+        question: 'Switch Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'scaleBlockCount',
+        question: 'Scale Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'vaultBlockCount',
+        question: 'Vault Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'disconnected',
+        question: 'Disconnected?',
         type: 'bool',
         defaultValue: false
       },
       {
-        id: 'disconnected',
+        id: 'switchBlockCount1',
+        question: 'Switch Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'scaleBlockCount1',
+        question: 'Scale Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'vaultBlockCount1',
+        question: 'Vault Block #',
+        type: 'number',
+        defaultValue: 0
+      },
+      {
+        id: 'disconnected1',
         question: 'Disconnected?',
         type: 'bool',
         defaultValue: false
@@ -81,56 +139,71 @@ export default class AddScout extends Component<{}> {
 
   togglePage() {
     if (this.state.pageIndex == 0) {
+      this.setState({ pageIndex: 1 });
       Animated.timing(this.state.fabPos, {
         toValue: 100,
         easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         duration: 400
       }).start();
-      this.setState({ pageIndex: 1 });
     } else {
       Animated.timing(this.state.fabPos, {
         toValue: 0,
         easing: Easing.bezier(0.25, 0.1, 0.25, 1),
         duration: 400
-      }).start();
-      this.setState({ pageIndex: 0 });
+      }).start(() => {
+        this.setState({ pageIndex: 0 });
+      });
     }
     const finalScoutObj = {};
     this.autoElements.map(e => {
       finalScoutObj[e.id] = this.state[e.id];
     });
-    console.log(this.state.auto);
-    console.log(this.state.teleop);
+    console.log({ auto: this.state.auto, teleop: this.state.teleop });
   }
 
   renderType(e, obj) {
     switch (e.type) {
       case 'bool':
         return (
-          <ScoutBool
-            changeValue={newValue => {
-              this.state[obj][e.id] = newValue;
-              this.forceUpdate();
-            }}
-            value={this.state[obj][e.id]}
-          />
+          <View style={styles.row} key={e.id}>
+            <Text style={styles.rowText}>{e.question}</Text>
+            <ScoutBool
+              changeValue={newValue => {
+                this.state[obj][e.id] = newValue;
+                this.forceUpdate();
+              }}
+              value={this.state[obj][e.id]}
+            />
+          </View>
+        );
+        break;
+      case 'number':
+        return (
+          <View style={styles.row} key={e.id}>
+            <Text style={styles.rowText}>{e.question}</Text>
+            <ScoutNum
+              changeValue={newValue => {
+                this.state[obj][e.id] = newValue;
+                this.forceUpdate();
+              }}
+              value={this.state[obj][e.id]}
+            />
+          </View>
         );
         break;
     }
   }
 
   renderElement(e, obj) {
-    return (
-      <View style={styles.row} key={e.id}>
-        <Text style={styles.rowText}>{e.question}</Text>
-        {this.renderType(e, obj)}
-      </View>
-    );
+    return this.renderType(e, obj);
+  }
+
+  enableFloatingButton() {
+    this.setState({ shouldDoneFloat: true });
   }
 
   render() {
     const { height, width } = Dimensions.get('window');
-    const { user, editing } = this.state;
     const fabButtonPos = {
       right: this.state.fabPos.interpolate({
         inputRange: [0, 100],
@@ -149,18 +222,32 @@ export default class AddScout extends Component<{}> {
       left: this.state.fabPos.interpolate({
         inputRange: [0, 100],
         outputRange: ['3%', '-100%']
+      }),
+      opacity: this.state.fabPos.interpolate({
+        inputRange: [0, 100],
+        outputRange: [1, 0]
       })
     };
     const pageTwo = {
       left: this.state.fabPos.interpolate({
         inputRange: [0, 100],
         outputRange: ['110%', '3%']
+      }),
+      opacity: this.state.fabPos.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, 1]
       })
     };
     const progressWidth = {
       width: this.state.fabPos.interpolate({
         inputRange: [0, 100],
         outputRange: ['0%', '85%']
+      })
+    };
+    const doneOpacity = {
+      opacity: this.state.fabPos.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, 1]
       })
     };
     return (
@@ -174,7 +261,7 @@ export default class AddScout extends Component<{}> {
           </View>
         </View>
         <View style={styles.mainContainer}>
-          <View style={styles.scoutingHeader}>
+          <View style={[styles.scoutingHeader, styles.scoutingHeaderBlue]}>
             <Text style={styles.scoutingHeaderText}>3256</Text>
             <Text style={styles.scoutingHeaderText}>Blue Alliance</Text>
           </View>
@@ -190,14 +277,36 @@ export default class AddScout extends Component<{}> {
           </View>
           <View style={styles.pageContainer}>
             <Animated.View style={[styles.pageOne, pageOne]}>
-              {this.autoElements.map((e, i) => {
-                return this.renderElement(e, 'auto');
-              })}
+              <ScrollView
+                style={{ width: '100%', height: '100%' }}
+                showsVerticalScrollIndicator={false}
+              >
+                {this.autoElements.map((e, i) => {
+                  return this.renderElement(e, 'auto');
+                })}
+              </ScrollView>
             </Animated.View>
             <Animated.View style={[styles.pageTwo, pageTwo]}>
-              {this.teleopElements.map((e, i) => {
-                return this.renderElement(e, 'teleop');
-              })}
+              <ScrollView
+                style={{ width: '100%', height: '100%' }}
+                showsVerticalScrollIndicator={false}
+                onScroll={({ nativeEvent }) => {
+                  if (isCloseToBottom(nativeEvent)) {
+                    this.enableFloatingButton();
+                  }
+                }}
+              >
+                {this.teleopElements.map((e, i) => {
+                  return this.renderElement(e, 'teleop');
+                })}
+                <View style={styles.doneButtonContainer}>
+                  {!this.state.shouldDoneFloat ? (
+                    <TouchableOpacity style={styles.doneButton}>
+                      <Text style={styles.doneButtonText}>Done</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              </ScrollView>
             </Animated.View>
           </View>
           <Animated.View style={[styles.fab, fabButtonPos]}>
@@ -217,6 +326,26 @@ export default class AddScout extends Component<{}> {
               />
             </TouchableOpacity>
           </Animated.View>
+          {this.state.pageIndex == 1 && this.state.shouldDoneFloat ? (
+            <Animated.View
+              style={[
+                styles.doneButton,
+                doneOpacity,
+                styles.doneButtonContainerStatic
+              ]}
+            >
+              <TouchableOpacity
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Text style={styles.doneButtonText}>Done</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          ) : null}
         </View>
       </View>
     );
@@ -281,10 +410,16 @@ const styles = StyleSheet.create({
   scoutingHeader: {
     width: '100%',
     height: 65,
-    backgroundColor: '#3CB3EC',
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  scoutingHeaderBlue: {
+    backgroundColor: '#3CB3EC'
+  },
+  scoutingHeaderRed: {
+    backgroundColor: '#C91833'
   },
   scoutingHeaderText: {
     fontSize: 35,
@@ -331,7 +466,7 @@ const styles = StyleSheet.create({
   },
   pageContainer: {
     width: '100%',
-    height: '100%'
+    height: Dimensions.get('window').height - 190
   },
   pageOne: {
     width: '94%',
@@ -351,6 +486,32 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   rowText: {
-    fontSize: 26
+    fontSize: 26,
+    fontWeight: '600'
+  },
+  doneButtonContainer: {
+    width: '100%',
+    height: 62,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+  },
+  doneButtonContainerStatic: {
+    position: 'absolute',
+    bottom: '12%',
+    right: 10
+  },
+  doneButton: {
+    width: 100,
+    height: 55,
+    backgroundColor: '#28DB41',
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  doneButtonText: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: 'white'
   }
 });
