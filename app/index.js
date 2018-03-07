@@ -8,13 +8,11 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import codePush from 'react-native-code-push';
 import { ServerIP } from './config/server';
 
-Meteor.connect('ws://' + ServerIP + '/websocket');
+Meteor.connect('wss://' + ServerIP + '/websocket');
 
 class App extends Component<{}> {
   constructor(props) {
     super(props);
-    // Testing native code integration
-    //NativeModules.CalendarManager.addEvent('something', 'ye');
   }
 
   render() {

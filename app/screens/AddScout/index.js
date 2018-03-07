@@ -25,6 +25,7 @@ import ScoutBool from '../../components/ScoutBool';
 import ScoutNum from '../../components/ScoutNum';
 
 import nextIcon from '../../images/next-arrow.png';
+import ScoutDropdownBox from '../../components/ScoutDropdownBox';
 
 const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
@@ -42,93 +43,36 @@ export default class AddScout extends Component<{}> {
       fabPos: new Animated.Value(0),
       teleop: {},
       auto: {},
-      shouldDoneFloat: false
+      shouldDoneFloat: false,
+      isRed: false
     };
 
-    this.autoElements = [
-      {
-        id: 'crossedLine',
-        question: 'Crossed Line?',
-        type: 'bool',
-        defaultValue: false
-      },
-      {
-        id: 'switchBlockCount',
-        question: 'Switch Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'scaleBlockCount',
-        question: 'Scale Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'disconnected',
-        question: 'Disconnected?',
-        type: 'bool',
-        defaultValue: false
-      }
-    ];
+    this.redColor = '#C91833';
+    this.blueColor = '#3CB3EC';
 
-    this.autoElements.map(e => {
-      this.state.auto[e.id] = e.defaultValue;
+    this.autoElements = [];
+    this.teleopElements = [];
+  }
+
+  componentDidMount() {
+    Meteor.call('scouting.getScoutingSchema', (err, schema) => {
+      console.log(schema);
+      this.autoElements = schema.auto;
+
+      this.autoElements.map(e => {
+        this.state.auto[e.id] = e.defaultValue;
+      });
+
+      this.teleopElements = schema.teleop;
+
+      this.teleopElements.map(e => {
+        this.state.teleop[e.id] = e.defaultValue;
+      });
+
+      this.forceUpdate();
     });
-
-    this.teleopElements = [
-      {
-        id: 'switchBlockCount',
-        question: 'Switch Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'scaleBlockCount',
-        question: 'Scale Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'vaultBlockCount',
-        question: 'Vault Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'disconnected',
-        question: 'Disconnected?',
-        type: 'bool',
-        defaultValue: false
-      },
-      {
-        id: 'switchBlockCount1',
-        question: 'Switch Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'scaleBlockCount1',
-        question: 'Scale Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'vaultBlockCount1',
-        question: 'Vault Block #',
-        type: 'number',
-        defaultValue: 0
-      },
-      {
-        id: 'disconnected1',
-        question: 'Disconnected?',
-        type: 'bool',
-        defaultValue: false
-      }
-    ];
-
-    this.teleopElements.map(e => {
-      this.state.teleop[e.id] = e.defaultValue;
+    Meteor.call('teams.get', (err, yeet) => {
+      console.log(yeet);
     });
   }
 
@@ -138,6 +82,7 @@ export default class AddScout extends Component<{}> {
   });
 
   togglePage() {
+    console.log(this.state);
     if (this.state.pageIndex == 0) {
       this.setState({ pageIndex: 1 });
       Animated.timing(this.state.fabPos, {
@@ -189,6 +134,19 @@ export default class AddScout extends Component<{}> {
               value={this.state[obj][e.id]}
             />
           </View>
+        );
+        break;
+      case 'number-dropdown':
+        return (
+          <ScoutDropdownBox
+            question={e.question}
+            changeValue={newValue => {
+              this.state[obj][e.id] = newValue;
+              this.forceUpdate();
+            }}
+            value={this.state[obj][e.id]}
+            backgroundColor={this.state.isRed ? this.redColor : this.blueColor}
+          />
         );
         break;
     }

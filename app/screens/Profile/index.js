@@ -8,11 +8,14 @@ import {
   TextInput,
   ScrollView,
   View,
+  Image,
   TouchableOpacity,
   TouchableNativeFeedback,
-  StatusBarww
+  StatusBar
 } from 'react-native';
 import PropTypes from 'prop-types';
+
+import ImagePicker from 'react-native-image-picker';
 
 import Meteor from 'react-native-meteor';
 import Divider from '../../components/Divider';
@@ -33,9 +36,21 @@ export default class Profile extends Component<{}> {
   });
 
   componentWillMount() {
-    Meteor.call('users.getCurrentUser', (e, user) => {
-      console.log(user[0]);
-      this.setState({ user: user[0] });
+    Meteor.call('users.getOne', Meteor.userId(), (e, user) => {
+      console.log(user);
+      this.setState({ user: user });
+    });
+    this.getProfilePicture();
+  }
+
+  getProfilePicture() {
+    Meteor.call('profile.getProfilePicture', Meteor.userId(), (e, picture) => {
+      console.log(e);
+      const source = { uri: picture };
+
+      this.setState({
+        avatarSource: source
+      });
     });
   }
 
@@ -52,6 +67,29 @@ export default class Profile extends Component<{}> {
     }
 
     this.setState({ editing: !this.state.editing });
+  }
+
+  showPicker() {
+    ImagePicker.showImagePicker({ title: 'Select Profile Photo' }, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        Meteor.call(
+          'profile.changeProfilePicture',
+          Meteor.userId(),
+          response.data,
+          (e, _id) => {
+            this.getProfilePicture();
+          }
+        );
+      }
+    });
   }
 
   render() {
@@ -73,7 +111,20 @@ export default class Profile extends Component<{}> {
         </View>
         <ScrollView style={styles.mainContainer}>
           <View style={styles.profilePictureContainer}>
-            <View style={styles.profilePicture} />
+            <TouchableOpacity
+              style={{ width: 125, height: 125 }}
+              onPress={() => this.showPicker()}
+            >
+              <Image
+                source={this.state.avatarSource}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 65
+                }}
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
           </View>
           <Divider />
           <View style={styles.row}>
@@ -218,6 +269,7 @@ const styles = StyleSheet.create({
   profilePicture: {
     width: 125,
     height: 125,
+    padding: -10,
     backgroundColor: '#EFEFEF',
     borderRadius: 100
   },
