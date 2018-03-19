@@ -44,7 +44,15 @@ export default class AddScout extends Component<{}> {
       teleop: {},
       auto: {},
       shouldDoneFloat: false,
-      isRed: false
+      isRed: this.props.navigation.state.params.isRed,
+      timer: '2m 30s',
+      startTime: new Date(),
+      endTime: new Date(new Date().getTime() + 150000),
+      team: this.props.navigation.state.params.teamNumber,
+      match: this.props.navigation.state.params.matchKey,
+      timeline: [],
+      canScoutAuto: true,
+      canScoutTeleop: false
     };
 
     this.redColor = '#C91833';
@@ -52,6 +60,7 @@ export default class AddScout extends Component<{}> {
 
     this.autoElements = [];
     this.teleopElements = [];
+    this.interval = null;
   }
 
   componentDidMount() {
@@ -71,9 +80,52 @@ export default class AddScout extends Component<{}> {
 
       this.forceUpdate();
     });
+
     Meteor.call('teams.get', (err, yeet) => {
       console.log(yeet);
     });
+
+    Meteor.call('scouting.finalInfoForTeam', '2018casd', 'frc3256');
+
+    this.interval = setInterval(() => {
+      const date = this.state.endTime.getTime() - new Date();
+      var minutes = Math.floor(date / 60000);
+      var seconds = ((date % 60000) / 1000).toFixed(0);
+      if (minutes == 2 && seconds == 29) {
+        this.state.timeline.push({
+          title: 'Autonomous started',
+          description: 'Autonomous period has started',
+          time: '00:00'
+        });
+      }
+      if (minutes == 2 && seconds == 15) {
+        this.state.timeline.push({
+          title: 'Teleop started',
+          description: 'Teleoperated period has started',
+          time: '00:15'
+        });
+        if (this.state.pageIndex == 0) {
+          this.togglePage();
+        }
+        this.setState({ canScoutAuto: false, canScoutTeleop: true });
+      }
+
+      if (minutes == 0 && seconds == 1) {
+        this.state.timeline.push({
+          title: 'Match ended',
+          description: 'The match has ended',
+          time: '02:30'
+        });
+      }
+
+      if (minutes == -1 && seconds == -5) {
+        this.submit();
+      }
+
+      this.setState({
+        timer: minutes + 'm ' + (seconds < 10 ? '0' : '') + seconds + 's'
+      });
+    }, 1000);
   }
 
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -83,27 +135,44 @@ export default class AddScout extends Component<{}> {
 
   togglePage() {
     console.log(this.state);
-    if (this.state.pageIndex == 0) {
-      this.setState({ pageIndex: 1 });
-      Animated.timing(this.state.fabPos, {
-        toValue: 100,
-        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        duration: 400
-      }).start();
+    if (!this.state.canScoutAuto) {
     } else {
-      Animated.timing(this.state.fabPos, {
-        toValue: 0,
-        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        duration: 400
-      }).start(() => {
-        this.setState({ pageIndex: 0 });
-      });
+      if (this.state.pageIndex == 0) {
+        this.setState({ pageIndex: 1 });
+        Animated.timing(this.state.fabPos, {
+          toValue: 100,
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          duration: 400
+        }).start();
+      } else {
+        Animated.timing(this.state.fabPos, {
+          toValue: 0,
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          duration: 400
+        }).start(() => {
+          this.setState({ pageIndex: 0 });
+        });
+      }
     }
     const finalScoutObj = {};
     this.autoElements.map(e => {
       finalScoutObj[e.id] = this.state[e.id];
     });
     console.log({ auto: this.state.auto, teleop: this.state.teleop });
+    console.log(this.state.timeline);
+  }
+
+  formatDate(e) {
+    const date = new Date() - e.getTime();
+    var minutes = Math.floor(date / 60000);
+    var seconds = ((date % 60000) / 1000).toFixed(0);
+    return (
+      (minutes < 10 ? '0' : '') +
+      minutes +
+      ':' +
+      (seconds < 10 ? '0' : '') +
+      seconds
+    );
   }
 
   renderType(e, obj) {
@@ -115,6 +184,13 @@ export default class AddScout extends Component<{}> {
             <ScoutBool
               changeValue={newValue => {
                 this.state[obj][e.id] = newValue;
+                this.state.timeline.push({
+                  title: e.timelineTitle,
+                  description: String(newValue),
+                  time: this.formatDate(this.state.startTime),
+                  ms: new Date(),
+                  value: newValue
+                });
                 this.forceUpdate();
               }}
               value={this.state[obj][e.id]}
@@ -129,6 +205,13 @@ export default class AddScout extends Component<{}> {
             <ScoutNum
               changeValue={newValue => {
                 this.state[obj][e.id] = newValue;
+                this.state.timeline.push({
+                  title: e.timelineTitle,
+                  description: String(newValue),
+                  time: this.formatDate(this.state.startTime),
+                  ms: new Date(),
+                  value: newValue
+                });
                 this.forceUpdate();
               }}
               value={this.state[obj][e.id]}
@@ -140,9 +223,13 @@ export default class AddScout extends Component<{}> {
         return (
           <ScoutDropdownBox
             question={e.question}
-            changeValue={newValue => {
-              this.state[obj][e.id] = newValue;
+            time={this.formatDate(this.state.startTime)}
+            changeValue={(newValue, where) => {
+              this.state[obj][e.id][where] = newValue;
               this.forceUpdate();
+            }}
+            addToTimeline={(pickup, placed) => {
+              this.state.timeline.push(pickup, placed);
             }}
             value={this.state[obj][e.id]}
             backgroundColor={this.state.isRed ? this.redColor : this.blueColor}
@@ -158,6 +245,19 @@ export default class AddScout extends Component<{}> {
 
   enableFloatingButton() {
     this.setState({ shouldDoneFloat: true });
+  }
+
+  submit() {
+    Meteor.call(
+      'scouting.create',
+      { auto: this.state.auto, teleop: this.state.teleop },
+      this.state.timeline,
+      '2018casd',
+      'frc' + this.state.team,
+      this.state.match
+    );
+    clearInterval(this.interval);
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -215,13 +315,22 @@ export default class AddScout extends Component<{}> {
             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
               <Text style={styles.cancelButton}>Cancel</Text>
             </TouchableOpacity>
-            <Text style={styles.headerName}>Scouting</Text>
+            <Text style={styles.headerName}>Scouting - {this.state.timer}</Text>
           </View>
         </View>
         <View style={styles.mainContainer}>
-          <View style={[styles.scoutingHeader, styles.scoutingHeaderBlue]}>
-            <Text style={styles.scoutingHeaderText}>3256</Text>
-            <Text style={styles.scoutingHeaderText}>Blue Alliance</Text>
+          <View
+            style={[
+              styles.scoutingHeader,
+              this.state.isRed
+                ? styles.scoutingHeaderRed
+                : styles.scoutingHeaderBlue
+            ]}
+          >
+            <Text style={styles.scoutingHeaderText}>{this.state.team}</Text>
+            <Text style={styles.scoutingHeaderText}>
+              {this.state.isRed ? 'Red' : 'Blue'} Alliance
+            </Text>
           </View>
           <View style={styles.progressContainer}>
             <View style={styles.progressBarContainer}>
@@ -257,53 +366,9 @@ export default class AddScout extends Component<{}> {
                 {this.teleopElements.map((e, i) => {
                   return this.renderElement(e, 'teleop');
                 })}
-                <View style={styles.doneButtonContainer}>
-                  {!this.state.shouldDoneFloat ? (
-                    <TouchableOpacity style={styles.doneButton}>
-                      <Text style={styles.doneButtonText}>Done</Text>
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
               </ScrollView>
             </Animated.View>
           </View>
-          <Animated.View style={[styles.fab, fabButtonPos]}>
-            <TouchableOpacity
-              style={{
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onPress={() => this.togglePage()}
-            >
-              <Image
-                source={nextIcon}
-                resizeMode="contain"
-                style={styles.fabIcon}
-              />
-            </TouchableOpacity>
-          </Animated.View>
-          {this.state.pageIndex == 1 && this.state.shouldDoneFloat ? (
-            <Animated.View
-              style={[
-                styles.doneButton,
-                doneOpacity,
-                styles.doneButtonContainerStatic
-              ]}
-            >
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text style={styles.doneButtonText}>Done</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          ) : null}
         </View>
       </View>
     );
@@ -335,7 +400,7 @@ const styles = StyleSheet.create({
   },
   headerName: {
     position: 'absolute',
-    left: '45%',
+    left: '35%',
     bottom: 10,
     fontSize: 17,
     fontWeight: '700',

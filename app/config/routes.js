@@ -6,12 +6,12 @@ import Task from '../screens/Task';
 import SignIn from '../screens/SignIn';
 import Outreach from '../screens/Outreach';
 import Scout from '../screens/Scouting';
-import CreateNewResponsibility from '../screens/CreateNewResponsibility';
 import SeeAllResponsibilities from '../screens/SeeAllResponsibilities';
 import History from '../screens/History';
 import Profile from '../screens/Profile';
 import TasksSummary from '../screens/TaskSummary';
 import AddScout from '../screens/AddScout';
+import MatchResult from '../screens/MatchResult';
 
 import taskIcon from '../images/task-icon.png';
 import outreachIcon from '../images/outreach-icon.png';
@@ -31,12 +31,6 @@ export const AuthStack = StackNavigator(
 export const TaskStack = StackNavigator({
   Task: {
     screen: Task,
-    navigationOptions: {
-      header: null
-    }
-  },
-  NewResponsibility: {
-    screen: CreateNewResponsibility,
     navigationOptions: {
       header: null
     }
@@ -82,10 +76,17 @@ export const ScoutStack = StackNavigator({
     screen: Scout,
     navigationOptions: {
       header: null
-    },
+    }
   },
   AddScout: {
     screen: AddScout,
+    navigationOptions: {
+      header: null,
+      tabBar: false
+    }
+  },
+  MatchResult: {
+    screen: MatchResult,
     navigationOptions: {
       header: null,
       tabBar: false

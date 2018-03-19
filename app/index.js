@@ -8,7 +8,9 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import codePush from 'react-native-code-push';
 import { ServerIP } from './config/server';
 
-Meteor.connect('wss://' + ServerIP + '/websocket');
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
+
+Meteor.connect('ws://' + ServerIP + '/websocket');
 
 class App extends Component<{}> {
   constructor(props) {
@@ -18,27 +20,12 @@ class App extends Component<{}> {
   render() {
     const { status, user, loggingIn } = this.props;
 
-    if (!user) {
-      return (
-        <View style={{ width: '100%', height: '100%' }}>
-          {this.renderNoConnection(status.connected)}
-          <AuthStack />
-        </View>
-      );
-    }
-
     return (
       <View style={{ width: '100%', height: '100%' }}>
-        {this.renderNoConnection(status.connected)}
-        <Tabs />
+        {!status.connected && <NoConnection connection={status.connected} />}
+        {user ? <Tabs /> : <AuthStack />}
       </View>
     );
-  }
-
-  renderNoConnection(connected) {
-    if (!connected) {
-      return <NoConnection connection={connected} />;
-    }
   }
 }
 
@@ -54,7 +41,7 @@ export default createContainer(() => {
     user: Meteor.user(),
     loggingIn: Meteor.loggingIn()
   };
-}, codePush(App));
+}, codePush(codePushOptions)(App));
 
 const styles = StyleSheet.create({
   container: {

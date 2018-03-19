@@ -11,13 +11,50 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Meteor from 'react-native-meteor';
+
 import Header from '../../components/Header';
 import AddIcon from '../../images/add.png';
+import ScoutingModal from '../../components/ScoutingModal';
+
+import Timeline from 'react-native-timeline-listview';
+import { NavigationActions } from 'react-navigation';
 
 export default class Scouting extends Component<{}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      matches: null,
+      modalOpen: false
+    };
+  }
+
+  componentDidMount() {
+    Meteor.call('scouting.getByEvent', '2018casd', (err, list) => {
+      console.log(list);
+      this.setState({ matches: list });
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        <ScoutingModal
+          isModalVisible={this.state.modalOpen}
+          toggleModal={() =>
+            this.setState({ modalOpen: !this.state.modalOpen })
+          }
+          goToScouting={(teamNumber, eventKey, matchKey, isRed) => {
+            this.setState({ modalOpen: false });
+
+            this.props.navigation.navigate('AddScout', {
+              teamNumber: teamNumber,
+              eventKey: eventKey,
+              matchKey: matchKey,
+              isRed: isRed
+            });
+          }}
+        />
         <Header
           headerText="Scout"
           showProfile={true}
@@ -49,7 +86,7 @@ export default class Scouting extends Component<{}> {
               </View> */}
               <View style={styles.scoutingBoxContainer}>
                 <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('AddScout')}
+                  onPress={() => this.setState({ modalOpen: true })}
                   style={styles.addManually}
                 >
                   <Image source={AddIcon} style={styles.addManuallyIcon} />
@@ -61,6 +98,24 @@ export default class Scouting extends Component<{}> {
           </View>
           <View style={styles.divider} />
           <Text style={styles.headerText}>Previous</Text>
+          <ScrollView style={{ flex: 1, width: '100%', marginBottom: 10 }}>
+            {this.state.matches &&
+              this.state.matches.map((e, i) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('MatchResult', {
+                        match: e
+                      })
+                    }
+                  >
+                    <Text>
+                      {e.matchKey} - {e.teamKey}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+          </ScrollView>
         </ScrollView>
       </View>
     );

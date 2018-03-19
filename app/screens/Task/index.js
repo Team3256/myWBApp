@@ -25,7 +25,6 @@ import { NavigationActions } from 'react-navigation';
 
 import Header from '../../components/Header';
 import TaskBox from '../../components/TaskBox';
-import RunningTaskBox from '../../components/RunningTaskBox';
 import AddTaskBox from '../../components/AddTaskBox';
 import AddResponsibilityModal from '../../components/AddResponsibilityModal';
 import ListButton from '../../components/ListButton';
@@ -143,46 +142,11 @@ class Task extends Component<{}> {
     notification.finish(PushNotificationIOS.FetchResult.NoData);
   }
 
-  componentDidMount() {
-    BackgroundGeolocation.on('error', error => {
-      Alert.alert(
-        'Location services are disabled',
-        'Would you like to open location settings?',
-        [
-          {
-            text: 'Yes',
-            onPress: () => BackgroundGeolocation.showLocationSettings()
-          },
-          {
-            text: 'No',
-            onPress: () => this.setState({ canRenderTasks: false }),
-            style: 'cancel'
-          }
-        ]
-      );
-    });
-  }
+  componentDidMount() {}
 
   render() {
     const { responsibilities, loading, tasks, currentTask } = this.props;
     const { canRenderTasks } = this.state;
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const obj = pos.coords;
-        Meteor.call('devices.updateLocation', {
-          lat: obj.latitude,
-          lng: obj.longitude,
-          userId: Meteor.userId(),
-          UUID: DeviceInfo.getUniqueID()
-        });
-      },
-      null,
-      {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      }
-    );
     return (
       <View style={styles.container}>
         <Header
@@ -210,29 +174,17 @@ class Task extends Component<{}> {
               text="See All Responsibilities"
             />
             <View style={styles.responsibilitiesList}>
-              {canRenderTasks
-                ? responsibilities.map((e, i) => {
-                    if (currentTask && currentTask.responsibilityId == e._id) {
-                      return (
-                        <RunningTaskBox
-                          runningTask={currentTask}
-                          responsibility={e}
-                          stopTask={e => this.stopTask(e)}
-                          key={i}
-                        />
-                      );
-                    } else {
-                      return (
-                        <TaskBox
-                          responsibility={e}
-                          startTask={e => this.startTask(e)}
-                          runningTask={currentTask}
-                          key={i}
-                        />
-                      );
-                    }
-                  })
-                : null}
+              {responsibilities.map((e, i) => {
+                return (
+                  <TaskBox
+                    key={i}
+                    responsibility={e}
+                    startTask={e => this.startTask(e)}
+                    stopTask={e => this.stopTask(e)}
+                    runningTask={currentTask}
+                  />
+                );
+              })}
             </View>
           </View>
           <View style={styles.historyContainer}>

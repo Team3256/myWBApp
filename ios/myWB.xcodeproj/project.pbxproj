@@ -40,6 +40,8 @@
 		5226DA542028B06D0019CD1A /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5226DA302028AFB90019CD1A /* libRCTBackgroundGeolocation.a */; };
 		522E41D6203B7B2600EEFCB0 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 522E41D4203B7B0900EEFCB0 /* libRNImagePicker.a */; };
 		5298194820350B2D007AEDBD /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5298194520350B0E007AEDBD /* libRCTPushNotification.a */; };
+		52C3AAF9205E1561005203E5 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C3AAF8205E1561005203E5 /* Stickers.xcassets */; };
+		52C3AAFD205E1561005203E5 /* myWBStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 52C3AAF6205E1561005203E5 /* myWBStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		62CC4CB4B857B40E6AAA1F4E /* libPods-myWBTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B077737C0A052A308BBDAB0A /* libPods-myWBTests.a */; };
 		6389E025218D3735A8CD724F /* libPods-myWB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 14DF1528BC234C2AA398876F /* libPods-myWB.a */; };
@@ -377,6 +379,13 @@
 			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
+		52C3AAFB205E1561005203E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52C3AAF5205E1561005203E5;
+			remoteInfo = myWBStickers;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -413,6 +422,20 @@
 			remoteInfo = RCTBlob;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		52C3AAE6205E11DE005203E5 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				52C3AAFD205E1561005203E5 /* myWBStickers.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -457,6 +480,9 @@
 		5298193420350A7E007AEDBD /* myWB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = myWB.entitlements; sourceTree = "<group>"; };
 		5298193520350ACE007AEDBD /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		5298193F20350B0E007AEDBD /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		52C3AAF6205E1561005203E5 /* myWBStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = myWBStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		52C3AAF8205E1561005203E5 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
+		52C3AAFA205E1561005203E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		54EA9A8CAE99C5401B88C16A /* Pods-myWB-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myWB-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-myWB-tvOS/Pods-myWB-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -767,6 +793,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		52C3AAF7205E1561005203E5 /* myWBStickers */ = {
+			isa = PBXGroup;
+			children = (
+				52C3AAF8205E1561005203E5 /* Stickers.xcassets */,
+				52C3AAFA205E1561005203E5 /* Info.plist */,
+			);
+			path = myWBStickers;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -829,6 +864,7 @@
 				13B07FAE1A68108700A75B9A /* dbapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dbappTests */,
+				52C3AAF7205E1561005203E5 /* myWBStickers */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				523D65552016CC3400F1C836 /* Recovered References */,
@@ -847,6 +883,7 @@
 				00E356EE1AD99517003FC87E /* myWBTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* myWB-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* myWB-tvOSTests.xctest */,
+				52C3AAF6205E1561005203E5 /* myWBStickers.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -910,10 +947,12 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				A91939C2AEB4C3CE43C9E557 /* [CP] Embed Pods Frameworks */,
 				7260DA04C8776881CBEEDFF6 /* [CP] Copy Pods Resources */,
+				52C3AAE6205E11DE005203E5 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				52C3AAFC205E1561005203E5 /* PBXTargetDependency */,
 			);
 			name = myWB;
 			productName = "Hello World";
@@ -962,6 +1001,21 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* myWB-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		52C3AAF5205E1561005203E5 /* myWBStickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52C3AAFE205E1561005203E5 /* Build configuration list for PBXNativeTarget "myWBStickers" */;
+			buildPhases = (
+				52C3AAF4205E1561005203E5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = myWBStickers;
+			productName = myWBStickers;
+			productReference = 52C3AAF6205E1561005203E5 /* myWBStickers.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -998,6 +1052,11 @@
 						DevelopmentTeam = 3PWDM4W55V;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
+					};
+					52C3AAF5205E1561005203E5 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 3PWDM4W55V;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1108,6 +1167,7 @@
 				00E356ED1AD99517003FC87E /* myWBTests */,
 				2D02E47A1E0B4A5D006451C7 /* myWB-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* myWB-tvOSTests */,
+				52C3AAF5205E1561005203E5 /* myWBStickers */,
 			);
 		};
 /* End PBXProject section */
@@ -1491,6 +1551,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52C3AAF4205E1561005203E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52C3AAF9205E1561005203E5 /* Stickers.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1764,6 +1832,11 @@
 			target = 2D02E47A1E0B4A5D006451C7 /* myWB-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
+		52C3AAFC205E1561005203E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52C3AAF5205E1561005203E5 /* myWBStickers */;
+			targetProxy = 52C3AAFB205E1561005203E5 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1863,6 +1936,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = myWB.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 3PWDM4W55V;
@@ -1900,6 +1974,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = myWB.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3PWDM4W55V;
 				HEADER_SEARCH_PATHS = (
@@ -2084,6 +2159,72 @@
 			};
 			name = Release;
 		};
+		52C3AAFF205E1561005203E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3PWDM4W55V;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = myWBStickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johncpanos.myWB.myWBStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		52C3AB00205E1561005203E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3PWDM4W55V;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = myWBStickers/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johncpanos.myWB.myWBStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2195,6 +2336,15 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52C3AAFE205E1561005203E5 /* Build configuration list for PBXNativeTarget "myWBStickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52C3AAFF205E1561005203E5 /* Debug */,
+				52C3AB00205E1561005203E5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

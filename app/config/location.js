@@ -6,19 +6,19 @@ import { ServerIP } from './server';
 
 export const TrackLocation = () => {
   const config = {
-    desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
+    desiredAccuracy: BackgroundGeolocation.LOW_ACCURACY,
     notificationTitle: 'myWB',
     notificationText: 'Running',
-    distanceFilter: 5,
+    distanceFilter: 50,
     debug: false,
     startOnBoot: true,
     stopOnTerminate: true,
     locationProvider: BackgroundGeolocation.RAW_PROVIDER,
-    interval: 1000,
-    fastestInterval: 1000,
-    activitiesInterval: 1000,
-    stopOnStillActivity: false,
-    url: 'http://' + ServerIP + '/methods/devices.updateLocation',
+    interval: 60000 * 2,
+    fastestInterval: 60000 * 2,
+    activitiesInterval: 60000 * 2,
+    stopOnStillActivity: true,
+    url: 'https://' + ServerIP + '/methods/devices.updateLocation',
     httpHeaders: {
       myWBApp: 'bar'
     },
@@ -105,5 +105,5 @@ export const TrackLocation = () => {
     // );
   });
 
-  BackgroundGeolocation.start();
+  // BackgroundGeolocation.start();
 };

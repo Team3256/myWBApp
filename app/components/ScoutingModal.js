@@ -15,24 +15,15 @@ import PropTypes from 'prop-types';
 import { RadioButtons } from 'react-native-radio-buttons';
 
 import Modal from 'react-native-modal';
-import { BlurView, VibrancyView } from 'react-native-blur';
 
-export default class AddResponsibilityModal extends Component<{}> {
+export default class ScoutingModal extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      responsibilityText: '',
-      responsibilityCategory: 'Business',
-      // TODO: Get catagories from server
-      categories: [
-        'Business',
-        'Programming',
-        'Machining',
-        'CAD',
-        'Inventory',
-        'Electrical',
-        'Other'
-      ]
+      teamNumber: '',
+      eventKey: '2018casd',
+      matchKey: '',
+      isRed: false
     };
   }
 
@@ -42,50 +33,45 @@ export default class AddResponsibilityModal extends Component<{}> {
       <Modal
         isVisible={isModalVisible}
         style={styles.modal}
-        backdropOpacity={Platform.OS === 'ios' ? 0 : 0.7}
-        ref={backdrop => {
-          this.backdrop = backdrop;
-        }}
+        backdropOpacity={0.5}
       >
-        {Platform.OS === 'ios' ? (
-          <VibrancyView
-            style={{
-              position: 'absolute',
-              top: -50,
-              left: -50,
-              bottom: -50,
-              right: -50
-            }}
-            viewRef={this.backdrop}
-            blurType="dark"
-            blurAmount={10}
-          />
-        ) : null}
-        {/* <KeyboardAvoidingView
+        <KeyboardAvoidingView
           behavior="position"
           contentContainerStyle={styles.background}
-        > */}
-        <View style={styles.background}>
+        >
           <View style={styles.buttonsContainer}>
             <TouchableOpacity onPress={() => toggleModal()}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.done()}>
-              <Text style={styles.doneText}>Done</Text>
+              <Text style={styles.doneText}>START</Text>
             </TouchableOpacity>
           </View>
           <View>
             <TextInput
               style={styles.input}
               underlineColorAndroid="rgba(0,0,0,0)"
-              placeholder="Name for Task"
-              onChangeText={text => this.setState({ responsibilityText: text })}
-              value={this.state.responsibilityText}
+              placeholder="Team Number"
+              onChangeText={text => this.setState({ teamNumber: text })}
+              value={this.state.teamNumber}
+            />
+          </View>
+          <View>
+            <TextInput
+              style={styles.input}
+              underlineColorAndroid="rgba(0,0,0,0)"
+              placeholder="Match Number"
+              onChangeText={text =>
+                this.setState({ matchKey: text.replace(' ', '') })
+              }
+              value={this.state.matchKey}
             />
             <RadioButtons
-              options={this.state.categories}
-              onSelection={selected => this.setSelectedCategory(selected)}
-              selectedOption={this.state.responsibilityCategory}
+              options={['Red', 'Blue']}
+              onSelection={selected =>
+                this.setState({ isRed: selected == 'Red' })
+              }
+              selectedOption={this.state.isRed ? 'Red' : 'Blue'}
               renderOption={(option, selected, onSelect, index) =>
                 this.renderCategory(option, selected, onSelect, index)
               }
@@ -94,35 +80,18 @@ export default class AddResponsibilityModal extends Component<{}> {
               }}
             />
           </View>
-        </View>
-        {/* </KeyboardAvoidingView> */}
+        </KeyboardAvoidingView>
       </Modal>
     );
   }
 
   done() {
-    if (this.state.responsibilityText.length < 4) {
-      Alert.alert(
-        'Error',
-        'Please type more than 3 characters',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-        { cancelable: false }
-      );
-    } else {
-      this.props.submitResponsibility(
-        this.state.responsibilityText,
-        this.state.responsibilityCategory
-      );
-      this.setState({
-        responsibilityText: '',
-        responsibilityCategory: this.state.categories[0]
-      });
-      this.props.toggleModal();
-    }
-  }
-
-  setSelectedCategory(selected) {
-    this.setState({ responsibilityCategory: selected });
+    this.props.goToScouting(
+      this.state.teamNumber,
+      this.state.eventKey,
+      this.state.matchKey,
+      this.state.isRed
+    );
   }
 
   renderCategory(option, selected, onSelect, index) {
@@ -142,10 +111,10 @@ export default class AddResponsibilityModal extends Component<{}> {
   }
 }
 
-AddResponsibilityModal.propTypes = {
+ScoutingModal.propTypes = {
   isModalVisible: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
-  submitResponsibility: PropTypes.func.isRequired
+  goToScouting: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -223,6 +192,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DFE0E6',
     borderRadius: 5,
-    padding: 5
+    padding: 5,
+    marginBottom: 10
   }
 });

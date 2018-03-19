@@ -27,6 +27,7 @@
     "react-native-radio-buttons": "^1.0.0",
     "react-native-swipeable-view": "^1.1.0",
     "react-native-swiper": "^1.5.13",
+    "react-native-timeline-listview": "^0.2.3",
     "react-navigation": "^1.0.0-beta.27"
   },
   "devDependencies": {
